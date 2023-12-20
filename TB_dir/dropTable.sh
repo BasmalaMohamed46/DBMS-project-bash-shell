@@ -1,13 +1,15 @@
 #!/bin/bash
 
-../TB_dir/listTable.sh
+. ./TB_dir/listTable.sh
 
 delete_table() {
     read -p "Enter the table you want to delete: " tbname
 
-    if [ -z "$tbname" ]; then
+    if [ -z "$tbname" ]
+    then
         echo "Error: You cannot enter an empty value. Please enter a valid name."
-    elif [ -f "$HOME/db_dir/$1/$tbname" ]; then
+    elif [ -f "$HOME/db_dir/$1/$tbname" ]
+    then
         read -p "Are you sure you want to delete this table? (y/n): " choice
 
         case $choice in
@@ -27,6 +29,7 @@ delete_table() {
     fi
 }
 
-if [ "$x" -ne 1 ]; then
+if [ "$flag" -eq 1 ]
+then
     delete_table "$1"
 fi

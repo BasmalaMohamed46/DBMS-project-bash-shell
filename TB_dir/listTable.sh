@@ -1,14 +1,15 @@
 #!/bin/bash
 
 directory="$HOME/db_dir/$1"
-x=0
+flag=0
 
-if [ -z "$(ls "$directory")" ]; then
+if [ -z "$(ls "$directory")" ]
+then
     echo "There are no tables."
-    x=1
 else
+    flag=1
     echo "Tables of the database $1:"
     ls "$directory"
 fi
 
-export x
+export flag

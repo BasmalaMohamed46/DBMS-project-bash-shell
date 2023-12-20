@@ -11,10 +11,11 @@ else
 
     read -p "Enter Number of columns: " n
 
-    for ((i = 1; i <= n; i++)); do
+    for ((i = 1; i <= n; i++)) 
+    do
         read -p "Enter column $i name: " name
-
-        while true; do
+        while true 
+        do
             read -p "Enter column datatype [string/int]: " dtype
 
             if [[ "$dtype" =~ ^[Ii][Nn][Tt]$ || "$dtype" =~ ^[Ss][Tt][Rr][Ii][Nn][Gg]$ ]]; then
@@ -24,7 +25,8 @@ else
             fi
         done
 
-        if [[ "$i" -eq "$n" ]]; then
+        if [[ "$i" -eq "$n" ]]
+        then
             echo "$name" >> "$HOME/db_dir/data/$1/$tbname"
             echo "$dtype" >> "$HOME/db_dir/data/$1/$tbname.tp"
         else

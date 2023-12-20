@@ -3,10 +3,10 @@ directory="$HOME/db_dir"
 flag=0
 if [ -z "$(ls -l "$directory" | grep '^d')" ]
 then
-echo "There is no database" 
-flag=1
+    echo "There is no database" 
 else
-echo "Available DataBases: "
-ls -l "$directory" | grep '^d' | awk '{print $NF}'
+    flag=1
+    echo "Available DataBases: "
+    ls -l "$directory" | grep '^d' | awk '{print $NF}'
 fi 
 export x
