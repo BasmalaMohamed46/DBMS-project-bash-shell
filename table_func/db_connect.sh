@@ -10,7 +10,7 @@ if [ "$x" -eq 1 ]; then
 
     if [ -z "$dbname" ]; then
         echo "Error: You cannot enter an empty value. Please enter a valid name."
-    elif [ -d $HOME/DBMS_proj/$dbname ]; then
+    elif [ -d $HOME/db_dir/$dbname ]; then
         select choice in "create table" "list tables" "drop table" "insert record" "Delete from table" "Select from table" "exit"; do
             case $REPLY in
                 1) ./TB_dir/createTable.sh "$dbname" ;;
