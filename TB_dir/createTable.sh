@@ -27,11 +27,11 @@ else
 
         if [[ "$i" -eq "$n" ]]
         then
-            echo "$name" >> "$HOME/db_dir/data/$1/$tbname"
-            echo "$dtype" >> "$HOME/db_dir/data/$1/$tbname.tp"
+            echo "$name" >> "$HOME/db_dir/$1/$tbname"
+            echo "$dtype" >> "$HOME/db_dir/$1/$tbname.tp"
         else
-            echo -n "$name:" >> "$HOME/db_dir/data/$1/$tbname"
-            echo -n "$dtype:" >> "$HOME/db_dir/data/$1/$tbname.tp"
+            echo -n "$name:" >> "$HOME/db_dir/$1/$tbname"
+            echo -n "$dtype:" >> "$HOME/db_dir/$1/$tbname.tp"
         fi
     done
 
