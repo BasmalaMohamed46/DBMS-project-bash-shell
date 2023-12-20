@@ -21,7 +21,7 @@ then
                 1) ./TB_dir/createTable.sh "$dbname" ;;
                 2) ./TB_dir/listTable.sh "$dbname" ;;
                 3) ./TB_dir/dropTable.sh "$dbname" ;;
-                4) echo "insert" ;;
+                4) ./TB_dir/insertTable.sh "$dbname";;
                 5) echo "delete" ;;
                 6) echo "select" ;;
                 7) exit ;;
