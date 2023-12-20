@@ -23,7 +23,7 @@ then
                 3) ./TB_dir/dropTable.sh "$dbname" ;;
                 4) ./TB_dir/insertTable.sh "$dbname";;
                 5) echo "delete" ;;
-                6) echo "select" ;;
+                6) ./TB_dir/retrieve_data.sh "$dbname" ;;
                 7) exit ;;
                 *) echo "$REPLY is not on the menu" ;;
             esac

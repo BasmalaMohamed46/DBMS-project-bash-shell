@@ -37,11 +37,10 @@ else
         done
     done
 
-    # Check for uniqueness of the primary key
     if grep -q "^$primary_key:" "$table_file"; then
         echo "Error: Primary key must be unique. Record with $primary_key already exists."
     else
-        echo "$record" >> "$table_file"
+        echo "$record" >> "$table_dir/records.txt"
         echo "Record inserted successfully into $tbname table."
     fi
 fi
