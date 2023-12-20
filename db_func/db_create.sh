@@ -1,12 +1,24 @@
 #!/bin/bash
+
 read -p "Enter Database name: " dbname
-if [ -z "$dbname" ] || [[ "$dbname" =~ [/.:\\-] ]]
+
+
+valid_dbname() {
+  [[ -n "$1" && ! "$1" =~ [/.:\\-] ]]
+}
+
+db_exist() {
+  [ -d "$HOME/db_dir/$1" ]
+}
+
+if valid_dbname "$dbname"
 then
-echo "Error: Database name cannot be empty or have special characters. Please enter a valid name."
-elif [ -d $HOME/db_dir/$dbname ]
-then
-echo "The Database $dbname already exists"
+  if db_exist "$dbname"
+  then
+    echo "Error: The Database $dbname already exists."
+  else
+    mkdir -p "$HOME/db_dir/$dbname" && echo "The DB $dbname is created successfully."
+  fi
 else
-mkdir $HOME/db_dir/$dbname
-echo "The DB is created successfully"
+  echo "Error: Database name cannot be empty or have special characters. Please enter a valid name."
 fi
