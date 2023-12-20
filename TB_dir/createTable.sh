@@ -10,6 +10,8 @@ else
     touch "$HOME/db_dir/$1/$tbname"
 
     read -p "Enter Number of columns: " n
+    primary_key_set=false
+    selected_primary_key=""
 
     for ((i = 1; i <= n; i++)) 
     do
@@ -25,15 +27,25 @@ else
             fi
         done
 
-        if [[ "$i" -eq "$n" ]]
-        then
-            echo "$name" >> "$HOME/db_dir/$1/$tbname"
-            echo "$dtype" >> "$HOME/db_dir/$1/$tbname.tp"
+        if [[ "$primary_key_set" == false ]]; then
+            read -p "Do you want to set $name as the primary key? (y/n): " is_pk
+            if [[ "$is_pk" =~ ^[Yy]$ ]]; then
+                selected_primary_key="$name"
+                primary_key_set=true
+            fi
+        fi
+
+        if [[ "$name" == "$selected_primary_key" ]]; then
+            echo "$name:$dtype:pk" >> "$HOME/db_dir/$1/$tbname"
         else
-            echo -n "$name:" >> "$HOME/db_dir/$1/$tbname"
-            echo -n "$dtype:" >> "$HOME/db_dir/$1/$tbname.tp"
+            echo "$name:$dtype" >> "$HOME/db_dir/$1/$tbname"
         fi
     done
 
-    echo "$tbname table has been created in the $1 database."
+    if [[ "$primary_key_set" == false ]]; then
+        echo "Error: No primary key set. Please choose a primary key column."
+        rm "$HOME/db_dir/$1/$tbname"  # Rollback, remove the table file
+    else
+        echo "$tbname table has been created in the $1 database with $selected_primary_key as the primary key."
+    fi
 fi
