@@ -2,7 +2,7 @@
 
 . ./db_func/db_list.sh
 
-PS3="Enter your operation: "
+PS3="Enter your operation (tables): "
 read -p "Enter your choice (1 to connect to a database, 2 to exit): " x
 
 if [ "$x" -eq 1 ]
