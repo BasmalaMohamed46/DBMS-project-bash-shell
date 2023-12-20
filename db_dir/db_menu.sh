@@ -1,7 +1,7 @@
 #!/bin/bash
 clear
 echo "*****************Bash Shell Script DMBS******************"
-PS3="Enter your choice: "
+PS3="Enter your choice (Database): "
 
 select choice in "create database" "list database" "connect to database" "drop database" "exit"
 do
