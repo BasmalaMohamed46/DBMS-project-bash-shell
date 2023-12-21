@@ -4,7 +4,7 @@ read -p "Enter Table Name: " tbname
 
 table_dir="$HOME/db_dir/$1"
 table_file="$table_dir/$tbname"
-records_file="$table_dir/records.txt"
+records_file="$table_dir/records_${tbname}.txt"
 
 if [[ -z "$tbname" || "$tbname" =~ [/.:\\-] ]]; then
     echo "Error: Table name cannot be empty or have special characters. Please enter a valid name."
@@ -29,11 +29,20 @@ else
         echo "Error: Column $column_to_select not found in the table file."
         fi
         ;;
-        3)
-            # Select by Primary Key
-            read -p "Enter primary key value: " primary_key_value
-            grep "$primary_key_value:" "$records_file"
-            ;;
+         3)
+           # Select by Primary Key
+           read -p "Enter primary key value: " primary_key_value
+           columnName=$(grep ":pk" "$table_file" | cut -d: -f1)
+           col_line_number=$(grep -n "^$columnName:" "$table_file" | cut -d: -f1)
+           typeset -i i=1
+           while true; do
+           if [[ $primary_key_value == $(sed -n "${i}p" "$records_file" | cut -d: -f$col_line_number) ]]; then
+            echo "$(sed -n "${i}p" "$records_file")"
+            break
+        fi
+        ((i++))
+    done
+    ;;
         *)
             echo "Invalid operation. Please select a valid option."
             ;;
