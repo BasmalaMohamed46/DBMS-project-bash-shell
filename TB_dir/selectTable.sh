@@ -19,21 +19,20 @@ else
             cat "$records_file"
             ;;
         2)
-            # Select Single Column
-            read -p "Enter column to select: " column_to_select
-            col_metadata=$(grep "^$column_to_select:" "$table_file")
-            if [[ -n "$col_metadata" ]]; then
-                cut -d: -f1 "$records_file" | while read -r record; do
-                    echo "$record" | awk -F: "{print \$$((i + 1))}" i=$(echo "$col_metadata" | grep -o ":" | wc -l) OFS=":"
-                done
-            else
-                echo "Error: Column $column_to_select not found."
-            fi
-            ;;
+          # Select Single Column
+          read -p "Enter column to select: " column_to_select
+          col_line_number=$(grep -n "^$column_to_select:" "$table_file" | cut -d: -f1)
+    
+          if [[ -n "$col_line_number" ]]; then
+          awk -F: -v col_line_number="$col_line_number" '{print $col_line_number}' "$records_file"
+         else
+        echo "Error: Column $column_to_select not found in the table file."
+        fi
+        ;;
         3)
             # Select by Primary Key
             read -p "Enter primary key value: " primary_key_value
-            grep "^$primary_key_value:" "$records_file"
+            grep "$primary_key_value:" "$records_file"
             ;;
         *)
             echo "Invalid operation. Please select a valid option."
