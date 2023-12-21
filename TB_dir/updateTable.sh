@@ -1,59 +1,61 @@
 #!/bin/bash
 
-function update_record {
-    read -p "Enter primary key value for the record to update: " primary_key_value
-
-    echo "Existing Record:"
-    grep "^$primary_key_value:" "$records_file"
-
-    read -p "Enter column to update: " column_to_update
-
-    # Check if the chosen column exists in the table file
-    col_metadata=$(grep "^$column_to_update:" "$table_file")
-    if [[ -z "$col_metadata" ]]; then
-        echo "Error: Column $column_to_update not found in the table file."
-        return
-    fi
-
-    col_index=$(echo "$col_metadata" | cut -d: -f1)
-
-    # If the chosen column is the primary key, check for duplication
-    if [[ "$column_to_update" == "$selected_primary_key" ]]; then
-        read -p "Enter new value for $column_to_update: " new_value
-        if grep -q "^$new_value:" "$records_file"; then
-            echo "Error: Updated primary key value already exists. Duplicates are not allowed."
-            return
-        fi
-    else
-        read -p "Enter new value for $column_to_update: " new_value
-    fi
-
-    # Update the record in the records file
-    awk -F: -v col_index="$col_index" -v new_value="$new_value" -v line_number="$record_line_number" \
-        '{if (NR == line_number) $col_index = new_value; print}' "$records_file" > temp_records
-    mv temp_records "$records_file"
-
-    echo "Record updated successfully."
-}
-
 read -p "Enter Table Name: " tbname
 
 table_dir="$HOME/db_dir/$1"
 table_file="$table_dir/$tbname"
-records_file="$table_dir/records.txt"
+records_file="$table_dir/records_${tbname}.txt"
 
 if [[ -z "$tbname" || "$tbname" =~ [/.:\\-] ]]; then
     echo "Error: Table name cannot be empty or have special characters. Please enter a valid name."
 elif [[ ! -f "$table_file" ]]; then
     echo "Error: Table $tbname does not exist."
 else
-    read -p "Enter primary key column name: " selected_primary_key
+    read -p "Enter primary key value: " primary_key_value
 
-    # Validate if the primary key column exists in the table file
-    if ! grep -q "^$selected_primary_key:" "$table_file"; then
-        echo "Error: Primary key column $selected_primary_key not found in the table file."
-        exit
+    columnName=$(grep ":pk" "$table_file" | cut -d: -f1)
+    col_line_number=$(grep -n "^$columnName:" "$table_file" | cut -d: -f1)
+    typeset -i i=1
+    while true
+    do
+        if [[ $primary_key_value == $(sed -n "${i}p" "$records_file" | cut -d: -f$col_line_number) ]]; then
+            record=$(sed -n "${i}p" "$records_file")
+            break
+        fi
+        ((i++))
+    done
+
+    # Select Single Column
+    read -p "Enter column to update: " column_to_update
+    col_line_number=$(grep -n "^$column_to_update:" "$table_file" | cut -d: -f1)
+    dtype=$(grep  "^$column_to_update:" "$table_file" | cut -d: -f2)
+     
+
+    if [[ -n "$col_line_number" ]]; then
+        read -p "Enter new value for $column_to_update: " new_val
+
+        if [[ -z "$new_val" ]]; then
+            echo "Error: $column_to_update cannot be empty."
+        elif [[ "$dtype" == "int" && ! "$new_val" =~ ^[0-9]+$ ]]; then
+            echo "Error: $column_to_update must be an integer."
+        else
+            if [[ $column_to_update == $columnName ]]; then
+                col_line_number=$(grep -n "^$column_to_update:" "$table_file" | cut -d: -f1)
+
+                if awk -F: -v col_line_number="$col_line_number" '{print $col_line_number}' "$records_file" | grep -q "$new_val"; then
+                    echo "Error: Primary key must be unique. Record with $new_val already exists."
+                else
+                    old_val=$(echo "$record" | cut -f$col_line_number -d:)
+                    sed -i "s/$old_val/$new_val/g" "$records_file"
+                    echo "Record updated successfully."
+                fi
+            else
+                old_val=$(echo "$record" | cut -f$col_line_number -d:)
+                sed -i "s/$old_val/$new_val/g" "$records_file"
+                echo "Record updated successfully."
+            fi
+        fi
+    else
+        echo "Error: Column $column_to_update not found in the table file."
     fi
-
-    update_record
 fi
