@@ -13,7 +13,7 @@ elif [[ ! -f "$table_file" ]]; then
 else
     columns=($(cut -d: -f1 "$table_file"))
     datatypes=($(cut -d: -f2 "$table_tp"))
-
+    datatypespk=($(cut -d: -f2,3 "$table_tp"))
     record=""
     primary_key=""
     for ((i = 0; i < ${#columns[@]}; i++)); do
@@ -29,7 +29,7 @@ else
                 echo "Error: $col must be an integer."
             else
                 record+="$value:"
-                if [[ "${datatypes[i]}" == *":pk" ]]; then
+                if [[ "${datatypespk[i]}" == *":pk" ]]; then
                     primary_key="$value"
                 fi
                 break
@@ -37,7 +37,7 @@ else
         done
     done
 
-    if grep -q "^$primary_key:" "$table_file"; then
+    if grep  "$primary_key:" "$table_file"; then
         echo "Error: Primary key must be unique. Record with $primary_key already exists."
     else
         echo "$record" >> "$table_dir/records.txt"
