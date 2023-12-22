@@ -11,6 +11,7 @@ if [[ -z "$tbname" || "$tbname" =~ [/.:\\-] ]]; then
 elif [[ ! -f "$table_file" ]]; then
     echo "Error: Table $tbname does not exist."
 else
+
     read -p "Enter primary key value: " primary_key_value
 
     columnName=$(grep ":pk" "$table_file" | cut -d: -f1)
@@ -21,6 +22,9 @@ else
         if [[ $primary_key_value == $(sed -n "${i}p" "$records_file" | cut -d: -f$col_line_number) ]]; then
             record=$(sed -n "${i}p" "$records_file")
             break
+	else
+		echo "Primary key is not found"
+		exit
         fi
         ((i++))
     done
