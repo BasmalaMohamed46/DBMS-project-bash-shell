@@ -39,6 +39,9 @@ else
            if [[ $primary_key_value == $(sed -n "${i}p" "$records_file" | cut -d: -f$col_line_number) ]]; then
             echo "$(sed -n "${i}p" "$records_file")"
             break
+	   else
+		   echo "Primary key not found"
+		   exit
         fi
         ((i++))
     done
