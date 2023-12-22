@@ -6,6 +6,7 @@ script_dir="DBMS"
 table_dir="$HOME/$script_dir/db_dir/$1"
 table_file="$table_dir/$tbname"
 table_tp="$table_file"
+records_file="$table_dir/records_${tbname}.txt"
 
 if [[ -z "$tbname" || "$tbname" =~ [/.:\\-] ]]; then
     echo "Error: Table name cannot be empty or have special characters. Please enter a valid name."
@@ -18,7 +19,7 @@ else
     record=""
     primary_key=""
 
-    touch "$table_dir/records_${tbname}.txt"
+    touch "$records_file"
 
     for ((i = 0; i < ${#columns[@]}; i++)); do
         col="${columns[i]}"
@@ -35,17 +36,16 @@ else
                 record+="$value:"
                 if [[ "${datatypespk[i]}" == *":pk" ]]; then
                     primary_key="$value"
-		    
                 fi
                 break
             fi
         done
     done
 
-   if awk -F: '{print $1}' "$records_file" | grep -q "^$primary_key$"; then
+    if grep -Eq "(^|:)$primary_key(:|$)" "$records_file"; then
         echo "Error: Primary key must be unique. Record with $primary_key already exists."
     else
-        echo "$record" >> "$table_dir/records_${tbname}.txt"
+        echo "$record" >> "$records_file"
         echo "Record inserted successfully into $tbname table."
     fi
 
