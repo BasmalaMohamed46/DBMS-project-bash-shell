@@ -2,12 +2,14 @@
 
 read -p "Enter Table Name: " tbname
 
+script_dir="DBMS"
+
 if [[ -z "$tbname" || "$tbname" =~ [/.:\\-] ]]; then
     echo "Error: Table name cannot be empty or have special characters. Please enter a valid name."
-elif [[ -f "$HOME/db_dir/$1/$tbname" ]]; then
+elif [[ -f "$HOME/$script_dir/db_dir/$1/$tbname" ]]; then
     echo "Table $tbname already exists."
 else
-    touch "$HOME/db_dir/$1/$tbname"
+    touch "$HOME/$script_dir/db_dir/$1/$tbname"
 
     read -p "Enter Number of columns: " n
     primary_key_set=false
@@ -36,15 +38,15 @@ else
         fi
 
         if [[ "$name" == "$selected_primary_key" ]]; then
-            echo "$name:$dtype:pk" >> "$HOME/db_dir/$1/$tbname"
+            echo "$name:$dtype:pk" >> "$HOME/$script_dir/db_dir/$1/$tbname"
         else
-            echo "$name:$dtype" >> "$HOME/db_dir/$1/$tbname"
+            echo "$name:$dtype" >> "$HOME/$script_dir/db_dir/$1/$tbname"
         fi
     done
 
     if [[ "$primary_key_set" == false ]]; then
         echo "Error: No primary key set. Please choose a primary key column."
-        rm "$HOME/db_dir/$1/$tbname"  # Rollback, remove the table file
+        rm "$HOME/$script_dir/db_dir/$1/$tbname"  # Rollback, remove the table file
     else
         echo "$tbname table has been created in the $1 database with $selected_primary_key as the primary key."
     fi

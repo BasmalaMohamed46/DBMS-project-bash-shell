@@ -2,7 +2,9 @@
 
 read -p "Enter Table Name: " tbname
 
-table_dir="$HOME/db_dir/$1"
+script_dir="DBMS"
+
+table_dir="$HOME/$script_dir/db_dir/$1"
 table_file="$table_dir/records_${tbname}.txt"
 table_tp="$table_file"
 

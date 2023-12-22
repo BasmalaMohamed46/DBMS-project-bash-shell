@@ -1,5 +1,7 @@
 #!/bin/bash
-. ./db_func/db_list.sh
+script_dir="DBMS"
+. ./$script_dir/db_func/db_list.sh
+
 
 if [ "$flag" -eq 1 ]
 then
@@ -7,12 +9,12 @@ then
     if [ -z "$dbname" ]
     then
         echo "Error: you cannot enter empty value.please enter a valid name."
-    elif [ -d $HOME/db_dir/$dbname ]
+    elif [ -d $HOME/$script_dir/db_dir/$dbname ]
     then
         read -p "Are you sure you want to delete this DB? y/n: " choice
         case $choice in
         [Yy]* )
-        rm -r $HOME/db_dir/$dbname
+        rm -r $HOME/$script_dir/db_dir/$dbname
         echo "$dbname has been deleted"
         ;;
         [Nn]* )

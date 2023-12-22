@@ -2,7 +2,8 @@
 
 read -p "Enter Table Name: " tbname
 
-table_dir="$HOME/db_dir/$1"
+script_dir="DBMS"
+table_dir="$HOME/$script_dir/db_dir/$1"
 table_file="$table_dir/$tbname"
 table_tp="$table_file"
 
@@ -16,6 +17,9 @@ else
     datatypespk=($(cut -d: -f2,3 "$table_tp"))
     record=""
     primary_key=""
+
+    touch "$table_dir/records_${tbname}.txt"
+
     for ((i = 0; i < ${#columns[@]}; i++)); do
         col="${columns[i]}"
         dtype="${datatypes[i]}"

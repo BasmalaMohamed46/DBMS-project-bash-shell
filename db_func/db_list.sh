@@ -1,6 +1,8 @@
 #!/bin/bash
-directory="$HOME/db_dir"
+script_dir="DBMS"
+directory="$HOME/$script_dir/db_dir"
 flag=0
+
 if [ -z "$(ls -l "$directory" | grep '^d')" ]
 then
     echo "There is no database" 

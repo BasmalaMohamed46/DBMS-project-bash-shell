@@ -1,6 +1,6 @@
 #!/bin/bash
-
-directory="$HOME/db_dir/$1"
+script_dir="DBMS"
+directory="$HOME/$script_dir/db_dir/$1"
 flag=0
 
 if [ -z "$(ls "$directory")" ]
