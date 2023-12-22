@@ -40,7 +40,7 @@ else
             echo "$(sed -n "${i}p" "$records_file")"
             break
 	   else
-		   echo "Primary key not found"
+		   echo "Error: Primary key not found"
 		   exit
         fi
         ((i++))
