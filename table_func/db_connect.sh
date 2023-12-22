@@ -1,5 +1,5 @@
 #!/bin/bash
-
+clear
 script_dir="DBMS"
 
 . ./$script_dir/db_func/db_list.sh
