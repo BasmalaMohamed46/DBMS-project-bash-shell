@@ -8,6 +8,11 @@ script_dir="DBMS"
 PS3="Enter your operation (tables): "
 read -p "Enter your choice (1 to connect to a database, 2 to exit): " x
 
+if [[ ! "$x" =~ ^[1-2]$ ]]; then
+    echo "Invalid choice. Please enter 1 or 2."
+    exit 1
+fi
+
 if [ "$x" -eq 1 ]
 then
   if [ "$flag" -eq 1 ]
