@@ -9,7 +9,7 @@ then
 else
     flag=1
     echo "Tables of the database $1:"
-    ls "$directory"
+    ls "$directory" | grep -v '^records'
 fi
 
 export flag
