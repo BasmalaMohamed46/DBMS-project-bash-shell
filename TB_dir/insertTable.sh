@@ -35,7 +35,7 @@ else
                 record+="$value:"
                 if [[ "${datatypespk[i]}" == *":pk" ]]; then
                     primary_key="$value"
-		    echo $primary_key
+		    
                 fi
                 break
             fi
