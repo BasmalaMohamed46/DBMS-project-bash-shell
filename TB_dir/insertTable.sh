@@ -42,7 +42,7 @@ else
         done
     done
 
-    if grep "^$primary_key:" "$table_dir/records_${tbname}.txt" | cut -d: -f1 | grep -q "^$primary_key$"; then
+   if awk -F: '{print $1}' "$records_file" | grep -q "^$primary_key$"; then
         echo "Error: Primary key must be unique. Record with $primary_key already exists."
     else
         echo "$record" >> "$table_dir/records_${tbname}.txt"
