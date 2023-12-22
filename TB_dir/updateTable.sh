@@ -52,12 +52,12 @@ else
                         echo "Error: Primary key must be unique. Record with $new_val already exists."
                     else
                         old_val=$(echo "$record" | cut -f$col_line_number -d:)
-                        sed -i "s/$old_val/$new_val/g" "$records_file"
+                        sed -i "${i}s/$old_val:/$new_val:/" "$records_file"
                         echo "Record updated successfully."
                     fi
                 else
                     old_val=$(echo "$record" | cut -f$col_line_number -d:)
-                    sed -i "s/$old_val/$new_val/g" "$records_file"
+                    sed -i "${i}s/$old_val:/$new_val:/" "$records_file"
                     echo "Record updated successfully."
                 fi
             fi
