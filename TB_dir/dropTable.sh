@@ -17,6 +17,8 @@ delete_table() {
         case $choice in
             [Yy]* )
                 rm "$HOME/$script_dir/db_dir/$1/$tbname"
+		rm "$HOME/$script_dir/db_dir/$1/records_$tbname.txt"
+
                 echo "$tbname has been deleted."
                 ;;
             [Nn]* )
